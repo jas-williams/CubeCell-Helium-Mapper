@@ -34,7 +34,7 @@ uint8_t appSKey[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 uint32_t devAddr =  ( uint32_t )0x00000000;
 
 /*LoraWan channelsmask, default channels 0-7*/ 
-uint16_t userChannelsMask[6]={ 0x00FF,0x0000,0x0000,0x0000,0x0000,0x0000 };
+uint16_t userChannelsMask[6]={ 0xFF00,0x0000,0x0000,0x0000,0x0000,0x0000 };
 
 /*LoraWan region, select in arduino IDE tools*/
 LoRaMacRegion_t loraWanRegion = ACTIVE_REGION;
@@ -43,7 +43,7 @@ LoRaMacRegion_t loraWanRegion = ACTIVE_REGION;
 DeviceClass_t  loraWanClass = LORAWAN_CLASS;
 
 /*the application data transmission duty cycle.  value in [ms].*/
-uint32_t appTxDutyCycle = 15000;
+uint32_t appTxDutyCycle = 1000;
 
 /*OTAA or ABP*/
 bool overTheAirActivation = LORAWAN_NETMODE;
@@ -138,12 +138,6 @@ void displayGPSInof()
   str[index] = 0;
   display.drawString(0, 48, str);
   display.display();
-  
-  index = sprintf(str,"sats:%d",(int)Air530.satellites.value());
-  str[index] = 0;
-  display.drawString(87, 48, str);
-  display.display();
-  
 }
 
 void printGPSInof()
@@ -200,7 +194,8 @@ static void prepareTxFrame( uint8_t port )
     the max value for different DR can be found in MaxPayloadOfDatarateCN470 refer to DataratesCN470 and BandwidthsCN470 in "RegionCN470.h".
   */
 
-  float lat, lon, alt, course, speed, hdop, sats;
+  uint32_t lat, lon;
+  int  alt, course, speed, hdop, sats;
   
   Serial.println("Waiting for GPS FIX ...");
 
@@ -217,6 +212,8 @@ static void prepareTxFrame( uint8_t port )
   
   Air530.begin();
   delay(1000);      //Added to improve acquisition
+  Air530.setmode(MODE_GPS_GLONASS);      // was added to enable GLONASS and GPS GNSS networks 
+
   uint32_t start = millis();
   while( (millis()-start) < GPS_UPDATE_TIMEOUT )
   {
@@ -267,73 +264,51 @@ static void prepareTxFrame( uint8_t port )
   display.stop();
   VextOFF(); //oled power off
   
-  lat = Air530.location.lat();
-  lon = Air530.location.lng();
-  alt = Air530.altitude.meters();
+  lat = (uint32_t)(Air530.location.lat()*1E7);
+  lon = (uint32_t)(Air530.location.lng()*1E7);
+  alt = (uint16_t)Air530.altitude.meters();
   course = Air530.course.deg();
   speed = Air530.speed.kmph();
   sats = Air530.satellites.value();
   hdop = Air530.hdop.hdop();
 
   uint16_t batteryVoltage = getBatteryVoltage();
-
   unsigned char *puc;
-
   appDataSize = 0;
-  puc = (unsigned char *)(&sats);
-  appData[appDataSize++] = puc[0];
-  appData[appDataSize++] = puc[1];
-  appData[appDataSize++] = puc[2];
-  appData[appDataSize++] = puc[3];
+
   puc = (unsigned char *)(&lat);
-  appData[appDataSize++] = puc[0];
-  appData[appDataSize++] = puc[1];
-  appData[appDataSize++] = puc[2];
   appData[appDataSize++] = puc[3];
+  appData[appDataSize++] = puc[2];
+  appData[appDataSize++] = puc[1];
+  appData[appDataSize++] = puc[0];
+
   puc = (unsigned char *)(&lon);
-  appData[appDataSize++] = puc[0];
-  appData[appDataSize++] = puc[1];
-  appData[appDataSize++] = puc[2];
   appData[appDataSize++] = puc[3];
+  appData[appDataSize++] = puc[2];
+  appData[appDataSize++] = puc[1];
+  appData[appDataSize++] = puc[0];
+  
   puc = (unsigned char *)(&alt);
-  appData[appDataSize++] = puc[0];
   appData[appDataSize++] = puc[1];
-  appData[appDataSize++] = puc[2];
-  appData[appDataSize++] = puc[3];
-  puc = (unsigned char *)(&course);
   appData[appDataSize++] = puc[0];
+  
+  puc = (unsigned char *)(&sats);
   appData[appDataSize++] = puc[1];
-  appData[appDataSize++] = puc[2];
-  appData[appDataSize++] = puc[3];
-  puc = (unsigned char *)(&speed);
   appData[appDataSize++] = puc[0];
-  appData[appDataSize++] = puc[1];
-  appData[appDataSize++] = puc[2];
-  appData[appDataSize++] = puc[3];
-  puc = (unsigned char *)(&hdop);
-  appData[appDataSize++] = puc[0];
-  appData[appDataSize++] = puc[1];
-  appData[appDataSize++] = puc[2];
-  appData[appDataSize++] = puc[3];
+
+  /*
   appData[appDataSize++] = (uint8_t)(batteryVoltage >> 8);
   appData[appDataSize++] = (uint8_t)batteryVoltage;
+  */
 
-  Serial.print("SATS: ");
-  Serial.print(Air530.satellites.value());
-  Serial.print(", HDOP: ");
-  Serial.print(Air530.hdop.hdop());
-  Serial.print(", LAT: ");
-  Serial.print(Air530.location.lat());
-  Serial.print(", LON: ");
-  Serial.print(Air530.location.lng());
-  Serial.print(", AGE: ");
-  Serial.print(Air530.location.age());
-  Serial.print(", ALT: ");
-  Serial.print(Air530.altitude.meters());
-  Serial.print(", COURSE: ");
-  Serial.print(Air530.course.deg());
-  Serial.print(", SPEED: ");
-  Serial.println(Air530.speed.kmph());
+  puc = (unsigned char *)(&lat);
+  Serial.println(lat,DEC);
+  
+  Serial.print("Hex");
+  Serial.println(*puc,HEX);
+  Serial.print("Dec");
+  Serial.println(*puc,DEC);
+  
   Serial.print(" BatteryVoltage:");
   Serial.println(batteryVoltage);
 }
@@ -342,23 +317,6 @@ static void prepareTxFrame( uint8_t port )
 void setup() {
   boardInitMcu();
   Serial.begin(115200);
-
-/*three modes supported: 
-  * GPS        :    MODE_GPS - this works
-  * GPS+BEIDOU :    MODE_GPS_BEIDOU this works 
-  * GPS+GLONASS:    MODE_GPS_GLONASS this works 
-  * GPS+GALILEO:    MODE_GPS_GALILEO this does not work
-  * GPS+BEIDOU+GLONASS+GALILEO:   MODE_GPS_MULTI   this does not work
-  * default mode is GPS+BEIDOU.
-  */
-  Air530.setmode(MODE_GPS_GLONASS);      // was added to enable GLONASS and GPS GNSS networks 
- 
-  String NMEA = Air530.getGSA();
-  
-  /*supported nmea sentence :
-  * GLL, RMC, VTG, GGA, GSA, GSV
-  */
-//  Air530.setNMEA(NMEA_GGA|NMEA_GSA|NMEA_RMC|NMEA_VTG);  // was commented out  but uncomment to see messages   (NMEA_GGA|NMEA_GSA|NMEA_RMC|NMEA_VTG);
 
 #if(AT_SUPPORT)
   enableAt();
@@ -393,7 +351,6 @@ void loop()
       prepareTxFrame( appPort );
       LoRaWAN.displaySending();
       LoRaWAN.send();
-      display.stop();
       deviceState = DEVICE_STATE_CYCLE;
       break;
     }
