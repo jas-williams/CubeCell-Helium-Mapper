@@ -24,10 +24,10 @@ Select Region
 Arduino IDE:
 
 Select Tools -> LoRaWAN Region: -> REGION_EU868
-Upload CubeCell-Helium-Mapper example
+Upload CubeCell_DIY_Mapper example
 Arduino IDE:
 
-Select File -> Open -> CubeCell_DIY_Mapper-car.ino
+Select File -> Open -> CubeCell_DIY_Mapper.ino
 Select Tools -> Port: "COM# or ttyACM#"
 Enter DevEUI(msb), AppEUI(msb), and AppKey(msb) from Helium Console, at lines 27, 28, 29.
 uint8_t DevEui[] = { FILL_ME_IN };
