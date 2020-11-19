@@ -9,10 +9,10 @@
 extern SSD1306Wire  display; 
 
 //when gps waked, if in GPS_UPDATE_TIMEOUT, gps not fixed then into low power mode
-#define GPS_UPDATE_TIMEOUT 60000
+#define GPS_UPDATE_TIMEOUT 120000
 
-//Wait 20 Secondsbetween GPS transmits
-#define GPS_CONTINUE_TIME 20000
+//Wait 10 Seconds between GPS transmits
+#define GPS_CONTINUE_TIME 10000
 /*
    set LoraWan_RGB to Active,the RGB active in loraWan
    RGB red means sending;
@@ -27,14 +27,13 @@ extern SSD1306Wire  display;
 uint8_t devEui[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 uint8_t appEui[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 uint8_t appKey[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-
 /* ABP para*/
 uint8_t nwkSKey[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 uint8_t appSKey[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 uint32_t devAddr =  ( uint32_t )0x00000000;
 
 /*LoraWan channelsmask, default channels 0-7*/ 
-uint16_t userChannelsMask[6]={ 0xFF00,0x0000,0x0000,0x0000,0x0000,0x0000 };
+uint16_t userChannelsMask[6]={ 0x00FF,0x0000,0x0000,0x0000,0x0000,0x0000 };
 
 /*LoraWan region, select in arduino IDE tools*/
 LoRaMacRegion_t loraWanRegion = ACTIVE_REGION;
@@ -43,7 +42,7 @@ LoRaMacRegion_t loraWanRegion = ACTIVE_REGION;
 DeviceClass_t  loraWanClass = LORAWAN_CLASS;
 
 /*the application data transmission duty cycle.  value in [ms].*/
-uint32_t appTxDutyCycle = 1000;
+uint32_t appTxDutyCycle = 15000;
 
 /*OTAA or ABP*/
 bool overTheAirActivation = LORAWAN_NETMODE;
@@ -130,13 +129,18 @@ void displayGPSInof()
   str[index] = 0;
   display.drawString(60, 16, str);   
   
-  index = sprintf(str,"lon:%d.%d",(int)Air530.location.lng(),fracPart(Air530.location.lng(),4));
+  index = sprintf(str,"lon: %d.%d",(int)Air530.location.lng(),fracPart(Air530.location.lng(),4));
   str[index] = 0;
   display.drawString(60, 32, str);
 
-  index = sprintf(str,"speed: %d.%d km/h",(int)Air530.speed.kmph(),fracPart(Air530.speed.kmph(),3));
+  index = sprintf(str,"speed: %d.%d km/h",(int)Air530.speed.kmph(),fracPart(Air530.speed.kmph(),2));
   str[index] = 0;
   display.drawString(0, 48, str);
+  display.display();
+
+  index = sprintf(str,"sats: %d",(int)Air530.satellites.value());
+  str[index] = 0;
+  display.drawString(88, 48, str);
   display.display();
 }
 
@@ -212,8 +216,7 @@ static void prepareTxFrame( uint8_t port )
   
   Air530.begin();
   delay(1000);      //Added to improve acquisition
-  Air530.setmode(MODE_GPS_GLONASS);      // was added to enable GLONASS and GPS GNSS networks 
-
+ 
   uint32_t start = millis();
   while( (millis()-start) < GPS_UPDATE_TIMEOUT )
   {
@@ -317,6 +320,7 @@ static void prepareTxFrame( uint8_t port )
 void setup() {
   boardInitMcu();
   Serial.begin(115200);
+  Air530.setmode(MODE_GPS_GLONASS);      // was added to enable GLONASS and GPS GNSS networks 
 
 #if(AT_SUPPORT)
   enableAt();
@@ -351,6 +355,7 @@ void loop()
       prepareTxFrame( appPort );
       LoRaWAN.displaySending();
       LoRaWAN.send();
+      display.stop();
       deviceState = DEVICE_STATE_CYCLE;
       break;
     }
