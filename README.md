@@ -3,8 +3,14 @@
 This is a version of the CubeCell demo app with a few tweaks to help the SAT aquisition and shows the information on the OLED display with no 
 Satelite Lock Updates happen every 2 minutes with a satelite lock location updates happen aprox every 30 seconds this can be changed by modifying the duty timer
 
+The payload and the decoder allows the data to update 
+[Mappers](http://mappers.helium.com) and [Cargo](https://cargo.helium.com)
 
-This example demonstrates  simple data mapper using a Heltec CubeCell 6502 board with OLED display. Please follow every instruction step below from top to bottom.
+[Integration information with Mappers](https://developer.helium.com/devices/coverage-mapping/mappers-api)
+
+[Integration information for Cargo](https://developer.helium.com/console/integrations/cargo)
+
+Using a Heltec CubeCell 6502 board with OLED display. Please follow every instruction step below from top to bottom.
 
 [Quickstart Guide](https://developer.helium.com/devices/arduino-quickstart/heltec-cubecell-board)
 
