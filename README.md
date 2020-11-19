@@ -27,17 +27,9 @@ Find Directions [here.](https://heltec-automation-docs.readthedocs.io/en/latest/
 # Setup Board Parameters
 
 ```
-Arduino IDE:
+Arduino IDE: 
 
 Select Tools -> Board: -> CubeCell -> CubeCell-GPS
-Select Tools -> LORAWAN_REGION -> REGION_EU868
-Select Tools -> LORAWAN_CLASS -> CLASS_A
-Select Tools -> LORAWAN_NETMODE -> OTAA
-Select Tools -> LORAWAN_ADR -> OFF
-Select Tools -> LORAWAN_Net_Reservation -> OFF
-Select Tools -> LORAWAN_AT_SUPPORT -> OFF
-Select Tools -> LORAWAN_RGB -> ACTIVE
-Select Tools -> LORAWAN Debug Level -> "Freq && DIO"
 
 ```
 # Upload CubeCell_DIY_Mapper example
@@ -57,10 +49,10 @@ uint8_t AppKey[] = { FILL_ME_IN };
 ```
 # Setup Application Parameters
 
-Arduino IDE:
+Arduino IDE: - **Note Region Specific Settings**
 
 ```
-Select Tools -> LORAWAN_REGION -> REGION_EU868
+Select Tools -> LORAWAN_REGION -> REGION_EU868 or Select Tools -> LORAWAN_REGION -> REGION_US915
 Select Tools -> LORAWAN_CLASS -> CLASS_A
 Select Tools -> LORAWAN_NETMODE -> OTAA
 Select Tools -> LORAWAN_ADR -> OFF
