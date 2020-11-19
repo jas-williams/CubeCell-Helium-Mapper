@@ -53,22 +53,16 @@ uint8_t AppKey[] = { FILL_ME_IN };
 
 Arduino IDE:
 
+```
 Select Tools -> LORAWAN_REGION -> REGION_EU868
-
 Select Tools -> LORAWAN_CLASS -> CLASS_A
-
 Select Tools -> LORAWAN_NETMODE -> OTAA
-
 Select Tools -> LORAWAN_ADR -> OFF
-
 Select Tools -> LORAWAN_Net_Reservation -> OFF
-
 Select Tools -> LORAWAN_AT_SUPPORT -> OFF
-
 Select Tools -> LORAWAN_RGB -> ACTIVE
-
 Select Tools -> LORAWAN Debug Level -> "Freq && DIO"
-
+```
 
 
 Select Sketch -> Upload.
