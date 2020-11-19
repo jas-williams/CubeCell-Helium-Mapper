@@ -11,7 +11,7 @@ function Decoder(bytes, port) {
     speed:
       (((bytes[11] << 8) | bytes[12])/1609).toFixed(2), 
     battery:
-      ((bytes[13] << 8) | bytes[14])/1000
+      ((bytes[13])*0.2)/10
     
   };
 }
