@@ -7,11 +7,11 @@ function Decoder(bytes, port) {
     altitude:
       (bytes[8] << 8) | bytes[9],
     sats:
-      (bytes[10] << 8) | bytes[11],
+      (bytes[10]),
     speed:
-      (((bytes[12] << 8) | bytes[13])/1609).toFixed(2),
+      (((bytes[11] << 8) | bytes[12])/1609).toFixed(2), 
     battery:
-      ((bytes[14] << 8) | bytes[15])/1000
+      ((bytes[13] << 8) | bytes[14])/1000
     
   };
 }
