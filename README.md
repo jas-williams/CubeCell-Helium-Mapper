@@ -19,48 +19,74 @@ Find Directions [here.](https://heltec-automation-docs.readthedocs.io/en/latest/
 Find Directions [here.](https://heltec-automation-docs.readthedocs.io/en/latest/cubecell/quick_start.html#install-cubecell-relevant-framework)
 
 # Setup Board Parameters
+
 Arduino IDE:
 
 Select Tools -> Board: -> CubeCell -> CubeCell-GPS
+
 Select Tools -> LORAWAN_REGION -> REGION_EU868
+
 Select Tools -> LORAWAN_CLASS -> CLASS_A
+
 Select Tools -> LORAWAN_NETMODE -> OTAA
+
 Select Tools -> LORAWAN_ADR -> OFF
+
 Select Tools -> LORAWAN_Net_Reservation -> OFF
+
 Select Tools -> LORAWAN_AT_SUPPORT -> OFF
+
 Select Tools -> LORAWAN_RGB -> ACTIVE
+
 Select Tools -> LORAWAN Debug Level -> "Freq && DIO"
 
 
 # Upload CubeCell_DIY_Mapper example
+
 Arduino IDE:
 
 Select File -> Open -> CubeCell_DIY_Mapper.ino
+
 Select Tools -> Port: "COM# or ttyACM#"
+
 Enter DevEUI(msb), AppEUI(msb), and AppKey(msb) from Helium Console, at lines 27, 28, 29.
+
 uint8_t DevEui[] = { FILL_ME_IN };
+
 uint8_t AppEui[] = { FILL_ME_IN };
+
 uint8_t AppKey[] = { FILL_ME_IN };
 
 # Setup Application Parameters
+
 Arduino IDE:
 
 Select Tools -> LORAWAN_REGION -> REGION_EU868
+
 Select Tools -> LORAWAN_CLASS -> CLASS_A
+
 Select Tools -> LORAWAN_NETMODE -> OTAA
+
 Select Tools -> LORAWAN_ADR -> OFF
+
 Select Tools -> LORAWAN_Net_Reservation -> OFF
+
 Select Tools -> LORAWAN_AT_SUPPORT -> OFF
+
 Select Tools -> LORAWAN_RGB -> ACTIVE
+
 Select Tools -> LORAWAN Debug Level -> "Freq && DIO"
 
 
 
 Select Sketch -> Upload.
+
 Wait for Done uploading message
 
 # Debug using Serial connection via USB
 
 Select Tools -> Serial Monitor Serial Monitor Window
+
 Select 115200 baud from bottom right dropdown.
+
 Wait for device to successfully join, may take 1-3 min, and show several failures. Do not be alarmed by the failures, it is expected.
