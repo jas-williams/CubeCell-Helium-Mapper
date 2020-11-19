@@ -34,7 +34,7 @@ uint8_t appSKey[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 uint32_t devAddr =  ( uint32_t )0x00000000;
 
 /*LoraWan channelsmask, default channels 0-7*/ 
-uint16_t userChannelsMask[6]={ 0x00FF,0x0000,0x0000,0x0000,0x0000,0x0000 };
+uint16_t userChannelsMask[6]={ 0xFF00,0x0000,0x0000,0x0000,0x0000,0x0000 };
 
 /*LoraWan region, select in arduino IDE tools*/
 LoRaMacRegion_t loraWanRegion = ACTIVE_REGION;
@@ -272,7 +272,7 @@ static void prepareTxFrame( uint8_t port )
   lon = (uint32_t)(Air530.location.lng()*1E7);
   alt = (uint16_t)Air530.altitude.meters();
   course = Air530.course.deg();
-  speed = Air530.speed.kmph();
+  speed = (Air530.speed.kmph())*100;
   sats = Air530.satellites.value();
   hdop = Air530.hdop.hdop();
 
@@ -300,6 +300,8 @@ static void prepareTxFrame( uint8_t port )
   appData[appDataSize++] = puc[1];
   appData[appDataSize++] = puc[0];
 
+  appData[appDataSize++] = (uint8_t)(speed >> 8);
+  appData[appDataSize++] = (uint8_t)speed;
 
   appData[appDataSize++] = (uint8_t)(batteryVoltage >> 8);
   appData[appDataSize++] = (uint8_t)batteryVoltage;
