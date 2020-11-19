@@ -10,10 +10,10 @@ This example demonstrates sending a simple data packet using a Heltec CubeCell B
 [Heltec CubeCell Board Product Page](https://heltec.org/project/htcc-ab02s/)
 [Heltec CubeCell Board Docs](https://heltec-automation-docs.readthedocs.io/en/latest/cubecell/quick_start.html#)
 
-#Install Serial Driver
+# Install Serial Driver
 Find Directions [here.](https://heltec-automation-docs.readthedocs.io/en/latest/general/establish_serial_connection.html)
 
-#Install CubeCell Board Support
+# Install CubeCell Board Support
 Find Directions [here.](https://heltec-automation-docs.readthedocs.io/en/latest/cubecell/quick_start.html#install-cubecell-relevant-framework)
 
 Select Board
