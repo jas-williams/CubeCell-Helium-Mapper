@@ -7,7 +7,9 @@ Satelite Lock Updates happen every 2 minutes with a satelite lock location updat
 This example demonstrates sending a simple data packet using a Heltec CubeCell Board . Please follow every instruction step below from top to bottom.
 
 [Quickstart Guide](https://developer.helium.com/devices/arduino-quickstart/heltec-cubecell-board)
+
 [Heltec CubeCell Board Product Page](https://heltec.org/project/htcc-ab02s/)
+
 [Heltec CubeCell Board Docs](https://heltec-automation-docs.readthedocs.io/en/latest/cubecell/quick_start.html#)
 
 # Install Serial Driver
