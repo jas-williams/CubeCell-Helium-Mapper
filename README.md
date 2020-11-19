@@ -58,7 +58,7 @@ Select Tools -> LORAWAN_NETMODE -> OTAA
 Select Tools -> LORAWAN_ADR -> OFF
 Select Tools -> LORAWAN_Net_Reservation -> OFF
 Select Tools -> LORAWAN_AT_SUPPORT -> OFF
-Select Tools -> LORAWAN_RGB -> ACTIVE
+Select Tools -> LORAWAN_RGB -> ACTIVE or Select Tools -> LORAWAN_RGB -> DEACTIVE // To turn off Bright Lora LED
 Select Tools -> LORAWAN Debug Level -> "Freq && DIO"
 ```
 
