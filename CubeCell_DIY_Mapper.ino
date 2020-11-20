@@ -117,6 +117,16 @@ void displayGPSInof()
   {
     display.drawString(120, 0, "V");
   }
+
+
+  if( Air530.speed.kmph() > 1.2 )
+  {
+    display.drawString(107, 0, "M");
+  }
+  else
+  {
+    display.drawString(107, 0, "S");
+  }
   
   index = sprintf(str,"alt: %d.%d",(int)Air530.altitude.meters(),fracPart(Air530.altitude.meters(),2));
   str[index] = 0;
@@ -200,7 +210,7 @@ static void prepareTxFrame( uint8_t port )
   */
 
   uint32_t lat, lon;
-  int  alt, course, speed, hdop, sats;
+  int  alt, course, speed, hdop, sats, updateTime;
   
   Serial.println("Waiting for GPS FIX ...");
 
@@ -232,12 +242,30 @@ static void prepareTxFrame( uint8_t port )
     }
   }
   
+  if ( Air530.speed.kmph() > 1.2) 
+  {
+    updateTime = GPS_CONTINUE_TIME;
+    Serial.print("Speed = ");
+    Serial.print(Air530.speed.kmph());
+    Serial.println(" MOVING");
+  }
+  
+  else 
+  {
+    updateTime = GPS_CONTINUE_TIME + 50000;
+    Serial.print("Speed = ");
+    Serial.print(Air530.speed.kmph());
+    Serial.println(" STOPPED");
+  }
+  
+
+  
   //if gps fixed,  GPS_CONTINUE_TIME later stop GPS into low power mode, and every 1 second update gps, print and display gps info
   if(Air530.location.age() < 1000)
   {
     start = millis();
     uint32_t printinfo = 0;
-    while( (millis()-start) < GPS_CONTINUE_TIME )
+    while( (millis()-start) < updateTime )
     {
       while (Air530.available() > 0)
       {
