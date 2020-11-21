@@ -43,7 +43,7 @@ LoRaMacRegion_t loraWanRegion = ACTIVE_REGION;
 DeviceClass_t  loraWanClass = LORAWAN_CLASS;
 
 /*the application data transmission duty cycle.  value in [ms].*/
-uint32_t appTxDutyCycle = 1000;
+uint32_t appTxDutyCycle;
 
 /*OTAA or ABP*/
 bool overTheAirActivation = LORAWAN_NETMODE;
@@ -242,30 +242,11 @@ static void prepareTxFrame( uint8_t port )
     }
   }
   
-  if ( Air530.speed.kmph() > 1.2) 
-  {
-    updateTime = GPS_CONTINUE_TIME;
-    Serial.print("Speed = ");
-    Serial.print(Air530.speed.kmph());
-    Serial.println(" MOVING");
-  }
-  
-  else 
-  {
-    updateTime = GPS_CONTINUE_TIME + 50000;
-    Serial.print("Speed = ");
-    Serial.print(Air530.speed.kmph());
-    Serial.println(" STOPPED");
-  }
-  
-
-  
-  //if gps fixed,  GPS_CONTINUE_TIME later stop GPS into low power mode, and every 1 second update gps, print and display gps info
   if(Air530.location.age() < 1000)
   {
     start = millis();
     uint32_t printinfo = 0;
-    while( (millis()-start) < updateTime )
+    while( (millis()-start) < GPS_CONTINUE_TIME )
     {
       while (Air530.available() > 0)
       {
@@ -395,7 +376,23 @@ void loop()
     case DEVICE_STATE_CYCLE:
     {
       // Schedule next packet transmission
-      txDutyCycleTime = appTxDutyCycle + randr( 0, APP_TX_DUTYCYCLE_RND );
+      if ( Air530.speed.kmph() > 1.2) 
+        {
+        appTxDutyCycle = MOVING_UPDATE_RATE;
+        Serial.print("Speed = ");
+        Serial.print(Air530.speed.kmph());
+        Serial.println(" MOVING");
+        }
+  
+      else 
+        {
+        appTxDutyCycle = STOPPED_UPDATE_RATE;
+        Serial.print("Speed = ");
+        Serial.print(Air530.speed.kmph());
+        Serial.println(" STOPPED");
+        }
+  
+  txDutyCycleTime = appTxDutyCycle + randr( 0, APP_TX_DUTYCYCLE_RND );
       LoRaWAN.cycle(txDutyCycleTime);
       deviceState = DEVICE_STATE_SLEEP;
       break;
