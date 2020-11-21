@@ -1,7 +1,7 @@
 # CubeCell-Helium-Mapper
 
 This is a version of the CubeCell demo app with a few tweaks to help the SAT aquisition and shows the information on the OLED display with no 
-Satelite Lock Updates happen every 2 minutes with a satelite lock location updates happen aprox every 30 seconds this can be changed by modifying the duty timer
+Satelite Lock Updates happen every 2 minutes with a satelite lock location updates whils moving updates every 10 seconds whilst stopped update every 60 seconds with a sleep in between.
 
 The payload and the decoder allows the data to update 
 [Mappers](http://mappers.helium.com) and [Cargo](https://cargo.helium.com)
