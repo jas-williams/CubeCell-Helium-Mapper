@@ -16,8 +16,6 @@ extern SSD1306Wire  display;
 #define MOVING_UPDATE_RATE 0 //in addition to GPS_CONTINUE_TIME
 #define STOPPED_UPDATE_RATE 50000 //In addition to \GPS_CONTINUE_TIME
 
-
-
 /*
    set LoraWan_RGB to Active,the RGB active in loraWan
    RGB red means sending;
