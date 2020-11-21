@@ -8,11 +8,16 @@
 
 extern SSD1306Wire  display; 
 
-//when gps waked, if in GPS_UPDATE_TIMEOUT, gps not fixed then into low power mode
+//How long to wait for GPS Fix if no fix in 2 minutes send update
 #define GPS_UPDATE_TIMEOUT 120000
 
-//Wait 10 Seconds between GPS transmits
+//Wait 10 Seconds after FIX for GPS to stabalise
 #define GPS_CONTINUE_TIME 10000
+#define MOVING_UPDATE_RATE 0 //in addition to GPS_CONTINUE_TIME
+#define STOPPED_UPDATE_RATE 50000 //In addition to \GPS_CONTINUE_TIME
+
+
+
 /*
    set LoraWan_RGB to Active,the RGB active in loraWan
    RGB red means sending;
@@ -42,7 +47,6 @@ LoRaMacRegion_t loraWanRegion = ACTIVE_REGION;
 /*LoraWan Class, Class A and Class C are supported*/
 DeviceClass_t  loraWanClass = LORAWAN_CLASS;
 
-/*the application data transmission duty cycle.  value in [ms].*/
 uint32_t appTxDutyCycle;
 
 /*OTAA or ABP*/
