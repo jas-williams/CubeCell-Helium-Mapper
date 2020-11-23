@@ -14,7 +14,10 @@ extern SSD1306Wire  display;
 //Wait 10 Seconds after FIX for GPS to stabalise
 #define GPS_CONTINUE_TIME 10000
 #define MOVING_UPDATE_RATE 0 //in addition to GPS_CONTINUE_TIME
-#define STOPPED_UPDATE_RATE 50000 //In addition to \GPS_CONTINUE_TIME
+#define STOPPED_UPDATE_RATE 50000 //In addition to GPS_CONTINUE_TIME
+#define SLEEPING_UPDATE_RATE 21600000 //Update every 6hrs when sleeping
+
+bool sleepMode = false;
 
 /*
    set LoraWan_RGB to Active,the RGB active in loraWan
@@ -45,6 +48,7 @@ LoRaMacRegion_t loraWanRegion = ACTIVE_REGION;
 /*LoraWan Class, Class A and Class C are supported*/
 DeviceClass_t  loraWanClass = LORAWAN_CLASS;
 
+/*the application data transmission duty cycle.  value in [ms].*/
 uint32_t appTxDutyCycle;
 
 /*OTAA or ABP*/
@@ -97,6 +101,7 @@ void VextOFF(void) //Vext default OFF
   pinMode(Vext,OUTPUT);
   digitalWrite(Vext, HIGH);
 }
+
 void displayGPSInof()
 {
   char str[30];
@@ -212,7 +217,8 @@ static void prepareTxFrame( uint8_t port )
   */
 
   uint32_t lat, lon;
-  int  alt, course, speed, hdop, sats, updateTime;
+  int  alt, course, speed, hdop, sats;
+
   
   Serial.println("Waiting for GPS FIX ...");
 
@@ -326,8 +332,10 @@ static void prepareTxFrame( uint8_t port )
   Serial.print(" BatteryVoltage:");
   Serial.println(batteryVoltage);
 
-  Serial.print(" Modified BatteryVoltage:");
-  Serial.println(batteryVoltage/20);
+  Serial.print(" sleepMode = ");
+  Serial.println(sleepMode);
+
+
   
   
 }
@@ -337,13 +345,71 @@ void setup() {
   boardInitMcu();
   Serial.begin(115200);
   Air530.setmode(MODE_GPS_GLONASS);      // was added to enable GLONASS and GPS GNSS networks 
-
+  
+  //setup user button
+  pinMode(P3_3,INPUT);
+  attachInterrupt(P3_3,userKey,FALLING); 
+  
 #if(AT_SUPPORT)
   enableAt();
 #endif
   LoRaWAN.displayMcuInit();
   deviceState = DEVICE_STATE_INIT;
   LoRaWAN.ifskipjoin();
+}
+
+void userKey(void)
+{
+  delay(10);
+  if(digitalRead(P3_3)==0)
+  {
+    uint16_t keyDownTime = 0;
+    while(digitalRead(P3_3)==0)
+    {
+      delay(1);
+      keyDownTime++;
+      if(keyDownTime>=700)
+      break;
+    }
+    if(keyDownTime<700)
+    {
+      if (sleepMode)
+      {
+        sleepMode = false;
+        LoRaWAN.cycle(2000);
+        VextON();// oled power on;
+        delay(10); 
+        display.init();
+        display.clear();
+      
+        display.setTextAlignment(TEXT_ALIGN_CENTER);
+        display.setFont(ArialMT_Plain_16);
+        display.drawString(64, 32-16/2, "Waking UP....");
+        Serial.println("Waking UP...");
+        display.display();
+        delay(4000);
+        
+      }
+      else
+      {
+        sleepMode = true;
+        Serial.print("SleepMode = ");
+        Serial.println(sleepMode);
+        LoRaWAN.cycle(2000);
+        VextON();// oled power on;
+        delay(10); 
+        display.init();
+        display.clear();
+      
+        display.setTextAlignment(TEXT_ALIGN_CENTER);
+        display.setFont(ArialMT_Plain_16);
+        display.drawString(64, 32-16/2, "Sleeping....");
+        Serial.println("Sleeping...");
+        display.display();
+        delay(4000);
+      }
+    }
+  }
 }
 
 void loop()
@@ -372,13 +438,17 @@ void loop()
       LoRaWAN.displaySending();
       LoRaWAN.send();
       display.stop();
+      VextOFF();// oled power off;
       deviceState = DEVICE_STATE_CYCLE;
       break;
     }
     case DEVICE_STATE_CYCLE:
     {
       // Schedule next packet transmission
-      if ( Air530.speed.kmph() > 1.2) 
+      if (sleepMode) appTxDutyCycle = SLEEPING_UPDATE_RATE;
+      else
+      {
+        if ( Air530.speed.kmph() > 1.2) 
         {
         appTxDutyCycle = MOVING_UPDATE_RATE;
         Serial.print("Speed = ");
@@ -393,6 +463,7 @@ void loop()
         Serial.print(Air530.speed.kmph());
         Serial.println(" STOPPED");
         }
+      }
   
   txDutyCycleTime = appTxDutyCycle + randr( 0, APP_TX_DUTYCYCLE_RND );
       LoRaWAN.cycle(txDutyCycleTime);
