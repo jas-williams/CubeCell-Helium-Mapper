@@ -3,6 +3,8 @@
 This is a version of the CubeCell demo app with a few tweaks to help the SAT aquisition and shows the information on the OLED display with no 
 Satelite Lock Updates happen every 2 minutes with a satelite lock location updates whils moving updates every 10 seconds whilst stopped update every 60 seconds with a sleep in between.
 
+A quick press on the user button puts the GPS in a sleep mode after a position update. The sleep mode does an update every 6hrs then goes back to sleep pressing the user button again wakes up the Cubecell and it goes back to normal operation.
+
 The payload and the decoder allows the data to update 
 [Mappers](http://mappers.helium.com) and [Cargo](https://cargo.helium.com)
 
