@@ -469,7 +469,6 @@ void loop()
     }
     case DEVICE_STATE_SLEEP:
     {
-      LoRaWAN.displayAck();
       LoRaWAN.sleep();
       break;
     }
