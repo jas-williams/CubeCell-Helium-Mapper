@@ -12,8 +12,8 @@ extern SSD1306Wire  display;
 #define GPS_UPDATE_TIMEOUT 120000
 
 //Wait 10 Seconds after FIX for GPS to stabalise
-#define GPS_CONTINUE_TIME 10000
-#define MOVING_UPDATE_RATE 0 //in addition to GPS_CONTINUE_TIME
+#define GPS_CONTINUE_TIME 8000
+#define MOVING_UPDATE_RATE 1000 //in addition to GPS_CONTINUE_TIME
 #define STOPPED_UPDATE_RATE 50000 //In addition to GPS_CONTINUE_TIME
 #define SLEEPING_UPDATE_RATE 21600000 //Update every 6hrs when sleeping
 bool sleepMode = false;
@@ -47,7 +47,7 @@ LoRaMacRegion_t loraWanRegion = ACTIVE_REGION;
 DeviceClass_t  loraWanClass = LORAWAN_CLASS;
 
 /*the application data transmission duty cycle.  value in [ms].*/
-uint32_t appTxDutyCycle;
+uint32_t appTxDutyCycle = 1000;
 
 /*OTAA or ABP*/
 bool overTheAirActivation = LORAWAN_NETMODE;
