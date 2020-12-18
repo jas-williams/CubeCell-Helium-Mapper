@@ -11,12 +11,13 @@ extern SSD1306Wire  display;
 //How long to wait for GPS Fix if no fix in 2 minutes send update
 #define GPS_UPDATE_TIMEOUT 120000
 
-//Wait 10 Seconds after FIX for GPS to stabalise
-#define GPS_CONTINUE_TIME 8000
+//Wait 5 Seconds after FIX for GPS to stabalise
+#define GPS_CONTINUE_TIME 5000
 #define MOVING_UPDATE_RATE 1000 //in addition to GPS_CONTINUE_TIME
-#define STOPPED_UPDATE_RATE 50000 //In addition to GPS_CONTINUE_TIME
+#define STOPPED_UPDATE_RATE 55000 //In addition to GPS_CONTINUE_TIME
 #define SLEEPING_UPDATE_RATE 21600000 //Update every 6hrs when sleeping
 bool sleepMode = false;
+
 /*
    set LoraWan_RGB to Active,the RGB active in loraWan
    RGB red means sending;
@@ -31,6 +32,7 @@ bool sleepMode = false;
 uint8_t devEui[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 uint8_t appEui[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 uint8_t appKey[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+
 
 /* ABP para*/
 uint8_t nwkSKey[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
@@ -47,7 +49,7 @@ LoRaMacRegion_t loraWanRegion = ACTIVE_REGION;
 DeviceClass_t  loraWanClass = LORAWAN_CLASS;
 
 /*the application data transmission duty cycle.  value in [ms].*/
-uint32_t appTxDutyCycle = 1000;
+uint32_t appTxDutyCycle;
 
 /*OTAA or ABP*/
 bool overTheAirActivation = LORAWAN_NETMODE;
@@ -215,8 +217,10 @@ static void prepareTxFrame( uint8_t port )
 
   uint32_t lat, lon;
   int  alt, course, speed, hdop, sats;
+  float batteryLevel;
 
   
+  Serial.println();
   Serial.println("Waiting for GPS FIX ...");
 
   VextON();// oled power on;
@@ -231,8 +235,7 @@ static void prepareTxFrame( uint8_t port )
   display.display();
   
   Air530.begin();
-  delay(1000);      //Added to improve acquisition
- 
+   
   uint32_t start = millis();
   while( (millis()-start) < GPS_UPDATE_TIMEOUT )
   {
@@ -291,6 +294,13 @@ static void prepareTxFrame( uint8_t port )
   hdop = Air530.hdop.hdop();
 
   uint16_t batteryVoltage = getBatteryVoltage();
+  
+  //get Battery Level 1-254 Returned by BoardGetBatteryLevel
+  batteryLevel = (BoardGetBatteryLevel());
+  //Convert to %
+  batteryLevel = (batteryLevel/254)*100;
+  
+  //Build Payload
   unsigned char *puc;
   appDataSize = 0;
 
@@ -316,21 +326,17 @@ static void prepareTxFrame( uint8_t port )
   appData[appDataSize++] = (uint8_t)speed;
 
   appData[appDataSize++] = (uint8_t)((batteryVoltage/20) & 0xFF);
-
-
-  puc = (unsigned char *)(&lat);
-  Serial.println(lat,DEC);
   
-  Serial.print("Hex");
-  Serial.println(*puc,HEX);
-  Serial.print("Dec");
-  Serial.println(*puc,DEC);
+  Serial.print("Battery Level ");
+  Serial.print(batteryLevel);
+  Serial.println(" %");
   
-  Serial.print(" BatteryVoltage:");
+  Serial.print("BatteryVoltage:");
   Serial.println(batteryVoltage);
 
-  Serial.print(" sleepMode = ");
+  Serial.print("SleepMode = ");
   Serial.println(sleepMode);
+  Serial.println();
 
 
   
@@ -448,6 +454,7 @@ void loop()
         if ( Air530.speed.kmph() > 1.2) 
         {
         appTxDutyCycle = MOVING_UPDATE_RATE;
+        Serial.println();
         Serial.print("Speed = ");
         Serial.print(Air530.speed.kmph());
         Serial.println(" MOVING");
@@ -456,6 +463,7 @@ void loop()
       else 
         {
         appTxDutyCycle = STOPPED_UPDATE_RATE;
+        Serial.println();
         Serial.print("Speed = ");
         Serial.print(Air530.speed.kmph());
         Serial.println(" STOPPED");
