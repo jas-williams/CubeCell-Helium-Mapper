@@ -17,7 +17,8 @@ extern SSD1306Wire  display;
 #define STOPPED_UPDATE_RATE 55000 //In addition to GPS_CONTINUE_TIME
 #define SLEEPING_UPDATE_RATE 21600000 //Update every 6hrs when sleeping
 bool sleepMode = false;
-
+int speedcount;
+float speedtot;
 /*
    set LoraWan_RGB to Active,the RGB active in loraWan
    RGB red means sending;
@@ -184,7 +185,7 @@ void displayGPSInof()
   }
 
 
-  if( Air530.speed.kmph() > 1.2 )
+  if( (speedtot/speedcount) > 1.2 )
   {
     display.drawString(107, 0, "M");
   }
@@ -261,6 +262,16 @@ void printGPSInof()
   Serial.print(Air530.course.deg());
   Serial.print(", SPEED: ");
   Serial.println(Air530.speed.kmph());
+  Serial.print("SPEED Count: ");
+  Serial.println(speedcount);
+  Serial.print("SPEED Total: ");
+  Serial.println(speedtot);
+  Serial.print("SPEED Average: ");
+  Serial.println(speedtot/speedcount);
+
+
+
+  
   Serial.println();
 }
 
@@ -313,6 +324,8 @@ static void prepareTxFrame( uint8_t port )
   {
     start = millis();
     uint32_t printinfo = 0;
+    speedcount = 0;
+    speedtot = 0;
     while( (millis()-start) < GPS_CONTINUE_TIME )
     {
       while (Air530.available() > 0)
@@ -322,6 +335,8 @@ static void prepareTxFrame( uint8_t port )
 
       if( (millis()-start) > printinfo )
       {
+        speedcount +=1;
+        speedtot += Air530.speed.kmph();
         printinfo += 1000;
         printGPSInof();
         displayGPSInof();
@@ -349,7 +364,7 @@ static void prepareTxFrame( uint8_t port )
   lon = (uint32_t)(Air530.location.lng()*1E7);
   alt = (uint16_t)Air530.altitude.meters();
   course = Air530.course.deg();
-  speed = (Air530.speed.kmph())*100;
+  speed = (speedtot/speedcount)*100;
   sats = Air530.satellites.value();
   hdop = Air530.hdop.hdop();
 
@@ -513,12 +528,12 @@ void loop()
       if (sleepMode) appTxDutyCycle = SLEEPING_UPDATE_RATE;
       else
       {
-        if ( Air530.speed.kmph() > 1.2) 
+        if ( (speedtot/speedcount) > 1.2) 
         {
         appTxDutyCycle = MOVING_UPDATE_RATE;
         Serial.println();
         Serial.print("Speed = ");
-        Serial.print(Air530.speed.kmph());
+        Serial.print((speedtot/speedcount));
         Serial.println(" MOVING");
         }
   
@@ -527,7 +542,7 @@ void loop()
         appTxDutyCycle = STOPPED_UPDATE_RATE;
         Serial.println();
         Serial.print("Speed = ");
-        Serial.print(Air530.speed.kmph());
+        Serial.print((speedtot/speedcount));
         Serial.println(" STOPPED");
         }
       }
