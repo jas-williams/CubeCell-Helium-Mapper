@@ -289,7 +289,7 @@ static void prepareTxFrame( uint8_t port )
   display.drawXbm(0, 0, 128, 42, helium_logo_bmp);
   display.setTextAlignment(TEXT_ALIGN_CENTER);
   display.setFont(ArialMT_Plain_16);
-  display.drawString(64, 50-16/2, "GPS Searching...");
+  display.drawString(64, 54-16/2, "GPS Searching...");
   Serial.println("GPS Searching...");
   display.display();
   
@@ -335,7 +335,7 @@ static void prepareTxFrame( uint8_t port )
     display.drawXbm(0, 0, 128, 42, helium_logo_bmp);
     display.setTextAlignment(TEXT_ALIGN_CENTER);
     display.setFont(ArialMT_Plain_16);
-    display.drawString(64, 50-16/2, "No GPS signal");
+    display.drawString(64, 54-16/2, "No GPS signal");
     display.display();
     delay(2000);
   }
@@ -445,9 +445,10 @@ void userKey(void)
         display.init();
         display.clear();
       
+        display.drawXbm(0, 0, 128, 42, helium_logo_bmp);
         display.setTextAlignment(TEXT_ALIGN_CENTER);
         display.setFont(ArialMT_Plain_16);
-        display.drawString(64, 32-16/2, "Waking UP....");
+        display.drawString(64, 54-16/2, "Waking Up......");
         Serial.println("Waking UP...");
         display.display();
         delay(4000);
@@ -464,11 +465,12 @@ void userKey(void)
         display.init();
         display.clear();
       
+        display.drawXbm(0, 0, 128, 42, helium_logo_bmp);
         display.setTextAlignment(TEXT_ALIGN_CENTER);
         display.setFont(ArialMT_Plain_16);
-        display.drawString(64, 32-16/2, "Sleeping....");
-        Serial.println("Sleeping...");
-        display.display();
+        display.drawString(64, 54-16/2, "Sleeping....");
+        Serial.println("Sleeping....");
+        display.display();    
         delay(4000);
       }
     }
