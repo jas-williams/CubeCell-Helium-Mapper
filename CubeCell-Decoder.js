@@ -5,13 +5,13 @@ function Decoder(bytes, port) {
     longitude:
       ((bytes[4] << 24) | (bytes[5] << 16) | (bytes[6] << 8) | bytes[7]) / 1E7,
     altitude:
-      (bytes[8] << 8) | bytes[9],
+      0,
     sats:
-      (bytes[10]),
+      (bytes[8]),
     speed:
-      (((bytes[11] << 8) | bytes[12])/1609).toFixed(2), 
+      (((bytes[9]))/1.609).toFixed(2), 
     battery:
-      ((bytes[13])*0.2)/10
+      (((bytes[10])*0.2)/10).toFixed(2)
     
   };
 }
