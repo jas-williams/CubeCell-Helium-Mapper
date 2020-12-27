@@ -364,7 +364,11 @@ static void prepareTxFrame( uint8_t port )
   lon = (uint32_t)(Air530.location.lng()*1E7);
   alt = (uint16_t)Air530.altitude.meters();
   course = Air530.course.deg();
-  speed = (speedtot/speedcount)*100;
+  if (speedcount > 0)
+  {
+    speed = (speedtot/speedcount)*100;
+  }
+  else speed = 0;
   sats = Air530.satellites.value();
   hdop = Air530.hdop.hdop();
 
@@ -391,13 +395,14 @@ static void prepareTxFrame( uint8_t port )
   appData[appDataSize++] = puc[1];
   appData[appDataSize++] = puc[0];
   
-  puc = (unsigned char *)(&alt);
+  /*puc = (unsigned char *)(&alt);
   appData[appDataSize++] = puc[1];
   appData[appDataSize++] = puc[0];
+  */
   
   appData[appDataSize++] = (uint8_t)(sats & 0xFF);
 
-  appData[appDataSize++] = (uint8_t)(speed >> 8);
+  //appData[appDataSize++] = (uint8_t)(speed >> 8);
   appData[appDataSize++] = (uint8_t)speed;
 
   appData[appDataSize++] = (uint8_t)((batteryVoltage/20) & 0xFF);
