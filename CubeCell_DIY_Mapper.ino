@@ -366,7 +366,7 @@ static void prepareTxFrame( uint8_t port )
   course = Air530.course.deg();
   if (speedcount > 0)
   {
-    speed = (speedtot/speedcount)*100;
+    speed = (speedtot/speedcount);
   }
   else speed = 0;
   sats = Air530.satellites.value();
@@ -402,6 +402,7 @@ static void prepareTxFrame( uint8_t port )
   
   appData[appDataSize++] = (uint8_t)(sats & 0xFF);
 
+  //speed accuracy down to 1 KH to save payload
   appData[appDataSize++] = (uint8_t)(speed & 0xFF);
 
   appData[appDataSize++] = (uint8_t)((batteryVoltage/20) & 0xFF);
