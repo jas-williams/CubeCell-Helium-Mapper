@@ -402,8 +402,7 @@ static void prepareTxFrame( uint8_t port )
   
   appData[appDataSize++] = (uint8_t)(sats & 0xFF);
 
-  //appData[appDataSize++] = (uint8_t)(speed >> 8);
-  appData[appDataSize++] = (uint8_t)speed;
+  appData[appDataSize++] = (uint8_t)(speed & 0xFF);
 
   appData[appDataSize++] = (uint8_t)((batteryVoltage/20) & 0xFF);
   
