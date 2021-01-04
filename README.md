@@ -117,5 +117,10 @@ Create a new Label for the decoder then save the function
 
 you need to create two integrations one for CARGO and one for MAPPERS add the label created above to both integrations
 
-[Mapper Integration](https://developer.helium.com/devices/coverage-mapping/mappers-quickstart)
-[Cargo Integration](https://developer.helium.com/console/integrations/cargo)
+The payload and the decoder allows the data to update
+
+[Mappers](http://mappers.helium.com) and [Cargo](https://cargo.helium.com)
+
+[Integration information with Mappers](https://developer.helium.com/devices/coverage-mapping/mappers-api)
+
+[Integration information for Cargo](https://developer.helium.com/console/integrations/cargo)
