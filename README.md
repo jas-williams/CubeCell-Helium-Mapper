@@ -48,7 +48,7 @@ Select File -> Open -> CubeCell_DIY_Mapper.ino
 
 Select Tools -> Port: "COM# or ttyACM#"
 
-Enter DevEUI(msb), AppEUI(msb), and AppKey(msb) from Helium Console, at lines 27, 28, 29. MSB Format from console
+Enter DevEUI(msb), AppEUI(msb), and AppKey(msb) from Helium Console, at lines 27, 28, 29. MSB Format from console press the expand button to get the ID's in the format shown below.
 
 ![Console Image](https://gblobscdn.gitbook.com/assets%2F-M21bzsbFl2WA7VymAxU%2F-M6fLGmWEQ0QxjrJuvoC%2F-M6fLi5NzuMeWSzzihV-%2Fcubecell-console-details.png?alt=media&token=95f5c9b2-734a-4f84-bb88-523215873116)
 
