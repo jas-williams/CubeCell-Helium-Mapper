@@ -26,6 +26,12 @@ Find Directions [here.](https://heltec-automation-docs.readthedocs.io/en/latest/
 # Install CubeCell Board Support
 Find Directions [here.](https://heltec-automation-docs.readthedocs.io/en/latest/cubecell/quick_start.html#install-cubecell-relevant-framework)
 
+# Now go and perform the manual changes to the Payload and Preamble
+
+Set a DR_3 forllowing [this example](https://developer.helium.com/devices/arduino-quickstart/heltec-cubecell-board#manual-updates-to-the-heltec-runtime-libraries)
+
+
+
 # Setup Board Parameters
 
 ```
