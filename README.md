@@ -84,3 +84,38 @@ Select Tools -> Serial Monitor Serial Monitor Window
 Select 115200 baud from bottom right dropdown.
 
 Wait for device to successfully join, may take 1-3 min, and show several failures. Do not be alarmed by the failures, it is expected.
+
+
+
+#Setting up a Decoder
+
+In helium Console create a new function call it Heltec decoder => Type Decoder => Custom Script
+
+Copy and paste the decoder into the custom script pane
+
+```
+function Decoder(bytes, port) {
+  return {
+    latitude:
+      ((bytes[0] << 24) | (bytes[1] << 16) | (bytes[2] << 8) | bytes[3]) / 1E7,
+    longitude:
+      ((bytes[4] << 24) | (bytes[5] << 16) | (bytes[6] << 8) | bytes[7]) / 1E7,
+    altitude:
+      0,
+    sats:
+      (bytes[8]),
+    speed:
+      (((bytes[9]))/1.609).toFixed(2),
+    battery:
+      (((bytes[10])*0.2)/10).toFixed(2)
+    
+  };
+}
+```
+
+Create a new Label for the decoder then save the function
+
+you need to create two integrations one for CARGO and one for MAPPERS add the label created above to both integrations
+
+[Mapper Integration](https://developer.helium.com/devices/coverage-mapping/mappers-quickstart)
+[Cargo Integration](https://developer.helium.com/console/integrations/cargo)
