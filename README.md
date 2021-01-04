@@ -87,7 +87,7 @@ Wait for device to successfully join, may take 1-3 min, and show several failure
 
 
 
-#Setting up a Decoder
+# Setting up a Decoder
 
 In helium Console create a new function call it Heltec decoder => Type Decoder => Custom Script
 
@@ -124,3 +124,6 @@ The payload and the decoder allows the data to update
 [Integration information with Mappers](https://developer.helium.com/devices/coverage-mapping/mappers-api)
 
 [Integration information for Cargo](https://developer.helium.com/console/integrations/cargo)
+
+
+[Youtube Video from Joey](https://youtu.be/WIIC_DvZyz0)
