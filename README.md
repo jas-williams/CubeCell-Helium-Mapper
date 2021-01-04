@@ -28,7 +28,7 @@ Find Directions [here.](https://heltec-automation-docs.readthedocs.io/en/latest/
 
 # Now go and perform the manual changes to the Payload and Preamble
 
-Set a DR_3 forllowing [this example](https://developer.helium.com/devices/arduino-quickstart/heltec-cubecell-board#manual-updates-to-the-heltec-runtime-libraries)
+Set Datarate to DR_3 following [this Helium Guide](https://developer.helium.com/devices/arduino-quickstart/heltec-cubecell-board#manual-updates-to-the-heltec-runtime-libraries)
 
 
 
