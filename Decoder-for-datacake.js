@@ -6,20 +6,20 @@ function Decoder(bytes, port) {
 
           {
            field: "SATS",
-           value: bytes[8]
+           value: bytes[9]
         },
            {
             field: "SPEED",
-            value: (((bytes[9]))/1.609).toFixed(2)
+            value: (((bytes[8]))/1.609).toFixed(2)
         },
            {
             field: "BATTERY",
             value: (((bytes[10])*0.2)/10).toFixed(2)
         },
     ];
-    
+	
     var lat = ((bytes[0] << 24) | (bytes[1] << 16) | (bytes[2] << 8) | bytes[3]) / 1E7;
-    var lon = ((bytes[4] << 24) | (bytes[5] << 16) | (bytes[6] << 8) | bytes[7]) / 1E7;
+	var lon = ((bytes[4] << 24) | (bytes[5] << 16) | (bytes[6] << 8) | bytes[7]) / 1E7;
     
     if ((lat < 90) && (lat > -90)) {
         if ((lon < 90) && (lon > -90)) {
