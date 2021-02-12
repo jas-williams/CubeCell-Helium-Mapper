@@ -8,13 +8,13 @@ A quick press on the user button puts the GPS in a sleep mode after a position u
 The payload and the decoder allows the data to update 
 [Mappers](http://mappers.helium.com) and [Cargo](https://cargo.helium.com)
 
-[Integration information with Mappers](https://developer.helium.com/devices/coverage-mapping/mappers-api)
+[Integration information with Mappers](https://docs.helium.com/use-the-network/coverage-mapping/mappers-api/)
 
-[Integration information for Cargo](https://developer.helium.com/console/integrations/cargo)
+[Integration information for Cargo](https://docs.helium.com/use-the-network/console/integrations/cargo/)
 
 Using a Heltec CubeCell 6502 board with OLED display. Please follow every instruction step below from top to bottom.
 
-[Quickstart Guide](https://developer.helium.com/devices/arduino-quickstart/heltec-cubecell-board)
+[Quickstart Guide](https://docs.helium.com/use-the-network/devices/development/heltec-cubecell-htcc-ab01/arduino/)
 
 [Heltec CubeCell Board Product Page](https://heltec.org/project/htcc-ab02s/)
 
@@ -28,7 +28,7 @@ Find Directions [here.](https://heltec-automation-docs.readthedocs.io/en/latest/
 
 # Now go and perform the manual changes to the Payload and Preamble
 
-Set Datarate to DR_3 following [this Helium Guide](https://developer.helium.com/devices/arduino-quickstart/heltec-cubecell-board#manual-updates-to-the-heltec-runtime-libraries)
+Set Datarate to DR_3 following [this Helium Guide](https://docs.helium.com/use-the-network/devices/development/heltec-cubecell-htcc-ab01/arduino/#manual-updates-to-the-heltec-runtime-libraries)
 
 
 
@@ -122,9 +122,9 @@ The payload and the decoder allows the data to update
 
 [Mappers](http://mappers.helium.com) and [Cargo](https://cargo.helium.com)
 
-[Integration information with Mappers](https://developer.helium.com/devices/coverage-mapping/mappers-api)
+[Integration information with Mappers](https://docs.helium.com/use-the-network/coverage-mapping/mappers-api/)
 
-[Integration information for Cargo](https://developer.helium.com/console/integrations/cargo)
+[Integration information for Cargo](https://docs.helium.com/use-the-network/console/integrations/cargo/)
 
 
 [Youtube Video from Joey](https://youtu.be/WIIC_DvZyz0)
