@@ -303,9 +303,9 @@ static void prepareTxFrame( uint8_t port )
   display.drawString(64, 54-16/2, "GPS Searching...");
   Serial.println("GPS Searching...");
   display.display();
+
+  Air530.begin(); 
   
-  Air530.begin();
-   
   uint32_t start = millis();
   while( (millis()-start) < GPS_UPDATE_TIMEOUT )
   {
@@ -354,11 +354,12 @@ static void prepareTxFrame( uint8_t port )
     display.display();
     delay(2000);
   }
-  Air530.end(); 
-  display.clear();
-  display.display();
-  display.stop();
-  VextOFF(); //oled power off
+    
+    Air530.end(); 
+    display.clear();
+    display.display();
+    display.stop();
+    VextOFF(); //oled power off
   
   lat = (uint32_t)(Air530.location.lat()*1E7);
   lon = (uint32_t)(Air530.location.lng()*1E7);
@@ -400,13 +401,18 @@ static void prepareTxFrame( uint8_t port )
   appData[appDataSize++] = puc[0];
   */
   
+  puc = (unsigned char *)(&speed);
+  appData[appDataSize++] = puc[0];
+  
   appData[appDataSize++] = (uint8_t)(sats & 0xFF);
-
-  //speed accuracy down to 1 KH to save payload
-  appData[appDataSize++] = (uint8_t)(speed & 0xFF);
 
   appData[appDataSize++] = (uint8_t)((batteryVoltage/20) & 0xFF);
   
+  Serial.print("Speed ");
+  Serial.print(speed);
+  Serial.println(" kph");
+
+
   Serial.print("Battery Level ");
   Serial.print(batteryLevel);
   Serial.println(" %");
@@ -559,7 +565,7 @@ void loop()
     }
     case DEVICE_STATE_SLEEP:
     {
-      LoRaWAN.sleep();
+      LoRaWAN.sleep();   
       break;
     }
     default:
