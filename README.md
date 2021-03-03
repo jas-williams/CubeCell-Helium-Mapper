@@ -127,4 +127,5 @@ The payload and the decoder allows the data to update
 [Integration information for Cargo](https://docs.helium.com/use-the-network/console/integrations/cargo/)
 
 
+Here is a youtube Video uploaded by Joey but **note** Joey adds 3 lables you only need **one label** assign the one label to the device, function, and the 2 integrations
 [Youtube Video from Joey](https://youtu.be/WIIC_DvZyz0)
