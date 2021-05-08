@@ -13,6 +13,8 @@ extern SSD1306Wire  display;
 //How long to wait for GPS Fix if no fix in 2 minutes send update
 #define GPS_UPDATE_TIMEOUT 120000
 #define AUTO_SLEEP_TIME 600000
+#define AUTO_SLEEP_ENABLED true
+#define SW_420_CONNECTED true
 
 //Wait 5 Seconds after FIX for GPS to stabalise
 #define GPS_CONTINUE_TIME 5000
@@ -486,7 +488,10 @@ void userKey(void)
         delay(10); 
         display.init();
         display.clear();
-        detachInterrupt(switchVIB);      
+        if (SW_420_CONNECTED)
+        {
+          detachInterrupt(switchVIB);      
+        }
         display.drawXbm(0, 0, 128, 42, helium_logo_bmp);
         display.setTextAlignment(TEXT_ALIGN_CENTER);
         display.setFont(ArialMT_Plain_16);
@@ -501,7 +506,10 @@ void userKey(void)
         sleepMode = true;
         Serial.print("SleepMode = ");
         Serial.println(sleepMode);
-        attachInterrupt(switchVIB,Vibration,FALLING);
+        if (SW_420_CONNECTED)
+        {
+          attachInterrupt(switchVIB,Vibration,FALLING);
+        }
         LoRaWAN.cycle(2000);
         VextON();// oled power on;
         delay(10); 
@@ -602,34 +610,41 @@ void loop()
         Serial.println(lastStopped);
         Serial.print("Stopped Time = ");
         Serial.println(millis()-lastStopped);
-        if(lastStopped==0)
+        if (AUTO_SLEEP_ENABLED)
         {
-          lastStopped=millis();
-        }
-        else
-        {
-        if(millis() - lastStopped > AUTO_SLEEP_TIME)
-        {
-        sleepMode = true;
-        Serial.print("SleepMode = ");
-        Serial.println(sleepMode);
-        attachInterrupt(switchVIB,Vibration,FALLING);
-        LoRaWAN.cycle(2000);
-        VextON();// oled power on;
-        delay(10); 
-        display.init();
-        display.clear();
-        display.drawXbm(0, 0, 128, 42, helium_logo_bmp);
-        display.setTextAlignment(TEXT_ALIGN_CENTER);
-        display.setFont(ArialMT_Plain_16);
-        display.drawString(64, 54-16/2, "Sleeping....");
-        Serial.println("Sleeping....");
-        display.display();    
-        delay(4000);
-        }
-      }
-      }
-    }
+           if(lastStopped==0)
+           {
+             lastStopped=millis();
+           }
+           else
+           {
+           if(millis() - lastStopped > AUTO_SLEEP_TIME)
+           {
+           sleepMode = true;
+           Serial.print("SleepMode = ");
+           Serial.println(sleepMode);
+           if (SW_420_CONNECTED)
+           {
+              attachInterrupt(switchVIB,Vibration,FALLING);
+           }
+           LoRaWAN.cycle(2000);
+           VextON();// oled power on;
+           delay(10); 
+           display.init();
+           display.clear();
+           display.drawXbm(0, 0, 128, 42, helium_logo_bmp);
+           display.setTextAlignment(TEXT_ALIGN_CENTER);
+           display.setFont(ArialMT_Plain_16);
+           display.drawString(64, 54-16/2, "Sleeping....");
+           Serial.println("Sleeping....");
+           display.display();    
+           delay(4000);
+           }
+         }
+       }
+     }
+ }
+  
   txDutyCycleTime = appTxDutyCycle + randr( 0, APP_TX_DUTYCYCLE_RND );
       LoRaWAN.cycle(txDutyCycleTime);
       deviceState = DEVICE_STATE_SLEEP;
