@@ -490,7 +490,8 @@ void userKey(void)
         display.clear();
         if (SW_420_CONNECTED)
         {
-          detachInterrupt(switchVIB);      
+          detachInterrupt(switchVIB);
+          lastStopped=0;      
         }
         display.drawXbm(0, 0, 128, 42, helium_logo_bmp);
         display.setTextAlignment(TEXT_ALIGN_CENTER);
