@@ -538,7 +538,8 @@ if (sleepMode)
         delay(10); 
         display.init();
         display.clear();
-        detachInterrupt(switchVIB);      
+        detachInterrupt(switchVIB);
+        lastStopped=0;
         display.drawXbm(0, 0, 128, 42, helium_logo_bmp);
         display.setTextAlignment(TEXT_ALIGN_CENTER);
         display.setFont(ArialMT_Plain_16);
