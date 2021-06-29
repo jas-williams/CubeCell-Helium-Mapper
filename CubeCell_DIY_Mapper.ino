@@ -404,8 +404,8 @@ static void prepareTxFrame( uint8_t port )
   puc = (unsigned char *)(&speed);
   appData[appDataSize++] = puc[0];
   
-  appData[appDataSize++] = (uint8_t)(sats & 0xFF);
-
+  appData[appDataSize++] = (uint8_t)((hdop*10) & 0xFF);
+  
   appData[appDataSize++] = (uint8_t)((batteryVoltage/20) & 0xFF);
   
   Serial.print("Speed ");
