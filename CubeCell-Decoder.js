@@ -6,8 +6,8 @@ function Decoder(bytes, port) {
       ((bytes[4] << 24) | (bytes[5] << 16) | (bytes[6] << 8) | bytes[7]) / 1E7,
     altitude:
       0,
-    sats:
-      (bytes[9]),
+    accuracy:
+      (bytes[9]/10),
     speed:
       (((bytes[8]))/1.609).toFixed(2), 
     battery:
