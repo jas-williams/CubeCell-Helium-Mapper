@@ -5,8 +5,8 @@ function Decoder(bytes, port) {
     datacakeFields = [
 
           {
-           field: "SATS",
-           value: bytes[9]
+           field: "HDOP",
+           value: (bytes[9]/10)
         },
            {
             field: "SPEED",
