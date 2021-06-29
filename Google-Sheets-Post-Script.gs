@@ -16,7 +16,7 @@ function doPost(e) {
   ThisRecord[3]=json.decoded.payload.battery; //Battery
   ThisRecord[4]=json.decoded.payload.latitude; //Latitude
   ThisRecord[5]=json.decoded.payload.longitude; //Longitude
-  ThisRecord[6]=json.decoded.payload.hdop; //Sats
+  ThisRecord[6]=json.decoded.payload.accuracy; //Accuracy
   ThisRecord[7]=json.decoded.payload.speed; //Speed
   ThisRecord[8]=json.hotspots[0].name; //Hotspot Name
   //Get Hotspot Latitude
