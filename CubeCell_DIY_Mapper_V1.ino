@@ -4,16 +4,17 @@
 #include "LoRaWan_APP.h"
 #include "Arduino.h"
 #include "GPS_Air530.h"
+#include "GPS_Air530Z.h"
 //#include "cubecell_SSD1306Wire.h"
 #include "HT_SSD1306Wire.h"
 
 //if GPS module is Air530, use this
-Air530Class Air530;
+//Air530Class Air530;
 
 //if GPS module is Air530Z, use this
-//Air530ZClass GPS;
+Air530ZClass Air530;
 
-extern SSD1306Wire  display; 
+extern SSD1306Wire  display;
 
 //How long to wait for GPS Fix if no fix in 2 minutes send update
 #define GPS_UPDATE_TIMEOUT 120000
