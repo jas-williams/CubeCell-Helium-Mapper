@@ -169,6 +169,33 @@ void VextOFF(void) //Vext default OFF
   pinMode(Vext,OUTPUT);
   digitalWrite(Vext, HIGH);
 }
+
+void displayStatus(String status)
+{
+  VextON();// oled power on;
+  delay(10); 
+  display.init();
+  display.clear();
+  display.drawXbm(0, 0, 128, 42, helium_logo_bmp);
+  display.setTextAlignment(TEXT_ALIGN_CENTER);
+  
+  //get Battery Level 1-254 Returned by BoardGetBatteryLevel
+  float batteryLevel = (BoardGetBatteryLevel());
+  //Convert to %
+  batteryLevel = (batteryLevel/254)*100;
+  String str = "BATTERY ";
+  str.concat(batteryLevel);
+  str.concat("%");
+  uint16_t batteryVoltage = getBatteryVoltage();
+  str.concat(" ");
+  str.concat(batteryVoltage);
+  str.concat(" mV");
+  display.setFont(ArialMT_Plain_10);
+  display.drawString(64, 50-16/2, status);
+  display.drawString(64, 60-16/2, str);
+  display.display();  
+}
+
 void displayGPSInof()
 {
   char str[30];
@@ -301,25 +328,8 @@ static void prepareTxFrame( uint8_t port )
   Serial.println();
   Serial.println("Waiting for GPS FIX ...");
 
-  VextON();// oled power on;
-  delay(10); 
-  display.init();
-  display.clear();
-  display.drawXbm(0, 0, 128, 42, helium_logo_bmp);
-  display.setTextAlignment(TEXT_ALIGN_CENTER);
-  
-  //get Battery Level 1-254 Returned by BoardGetBatteryLevel
-  batteryLevel = (BoardGetBatteryLevel());
-  //Convert to %
-  batteryLevel = (batteryLevel/254)*100;
-  String str = "BATTERY ";
-  str.concat(batteryLevel);
-  str.concat("%");
-  display.setFont(ArialMT_Plain_10);
-  display.drawString(64, 50-16/2, "GPS Searching");
-  display.drawString(64, 60-16/2, str);
+  displayStatus("GPS Searching");
   Serial.println("GPS Searching...");
-  display.display();
 
   Air530.begin(); 
   
@@ -468,7 +478,7 @@ void setup() {
 #if(AT_SUPPORT)
   enableAt();
 #endif
-  LoRaWAN.displayMcuInit();
+  LoRaWAN.displayMcuInit();    
   deviceState = DEVICE_STATE_INIT;
   LoRaWAN.ifskipjoin();
   LoRaWAN.setDataRateForNoADR(0);
@@ -493,25 +503,7 @@ void userKey(void)
       {
         sleepMode = false;
         LoRaWAN.cycle(2000);
-        VextON();// oled power on;
-        delay(10); 
-        display.init();
-        display.clear();
-      
-        display.drawXbm(0, 0, 128, 42, helium_logo_bmp);
-        display.setTextAlignment(TEXT_ALIGN_CENTER);
-        //get Battery Level 1-254 Returned by BoardGetBatteryLevel
-        float batteryLevel = (BoardGetBatteryLevel());
-        //Convert to %
-        batteryLevel = (batteryLevel/254)*100;
-        String str = "BATTERY ";
-        str.concat(batteryLevel);
-        str.concat("%");
-        display.setFont(ArialMT_Plain_10);
-        display.drawString(64, 50-16/2, "Waking....");
-        display.drawString(64, 60-16/2, str);
-        Serial.println("Sleeping....");
-        display.display();    
+        displayStatus("Waking...");
         delay(4000);
                 
       }
@@ -521,25 +513,7 @@ void userKey(void)
         Serial.print("SleepMode = ");
         Serial.println(sleepMode);
         LoRaWAN.cycle(2000);
-        VextON();// oled power on;
-        delay(10); 
-        display.init();
-        display.clear();
-      
-        display.drawXbm(0, 0, 128, 42, helium_logo_bmp);
-        display.setTextAlignment(TEXT_ALIGN_CENTER);
-        //get Battery Level 1-254 Returned by BoardGetBatteryLevel
-        float batteryLevel = (BoardGetBatteryLevel());
-        //Convert to %
-        batteryLevel = (batteryLevel/254)*100;
-        String str = "BATTERY ";
-        str.concat(batteryLevel);
-        str.concat("%");
-        display.setFont(ArialMT_Plain_10);
-        display.drawString(64, 50-16/2, "Sleeping....");
-        display.drawString(64, 60-16/2, str);
-        Serial.println("Sleeping....");
-        display.display();    
+        displayStatus("Sleeping...");
         delay(4000);
       }
     }
@@ -562,7 +536,8 @@ void loop()
     }
     case DEVICE_STATE_JOIN:
     {
-      LoRaWAN.displayJoining();
+      //LoRaWAN.displayJoining();
+      displayStatus("JOINING...");
       LoRaWAN.join();
       break;
     }
@@ -573,8 +548,9 @@ void loop()
       Serial.println(appDataSize);
       if  (appDataSize > 0)
       {
-        LoRaWAN.displaySending();
+        displayStatus("SENDING...");
         LoRaWAN.send();
+        delay(1000);
         display.stop();
         VextOFF();// oled power off;
         deviceState = DEVICE_STATE_CYCLE;
