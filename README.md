@@ -47,7 +47,7 @@ Select Tools -> Board: -> CubeCell -> CubeCell-GPS
 
 - CubeCell_DIY_Mapper_V1.ino: V1 supports Heltec firmware 1.3.
 
-- CubeCell_DIY_Mapper_VIB.ino: Supports legacy Heltec firmwar. The VIB version incorporates code to support a SW420 vibration sensor rather than using the user button to sleep/wake the device.
+- CubeCell_DIY_Mapper_VIB.ino: Supports legacy Heltec firmware. The VIB version incorporates code to support a SW420 vibration sensor rather than using the user button to sleep/wake the device.
 
 - CubeCell_DIY_Mapper_VIB_V1.ino: V1 supports Heltec firmware 1.3. The VIB version incorporates code to support a SW420 vibration sensor rather than using the user button to sleep/wake the device.
 
