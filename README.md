@@ -40,11 +40,23 @@ Arduino IDE:
 Select Tools -> Board: -> CubeCell -> CubeCell-GPS
 
 ```
+
+# Code Example Varations Provided
+
+- CubeCell_DIY_Mapper.ino: Supports legacy Heltec firmware.
+
+- CubeCell_DIY_Mapper_V1.ino: V1 supports Heltec firmware 1.3.
+
+- CubeCell_DIY_Mapper_VIB.ino: Supports legacy Heltec firmwar. The VIB version incorporates code to support a SW420 vibration sensor rather than using the user button to sleep/wake the device.
+
+- CubeCell_DIY_Mapper_VIB_V1.ino: V1 supports Heltec firmware 1.3. The VIB version incorporates code to support a SW420 vibration sensor rather than using the user button to sleep/wake the device.
+
+
 # Upload CubeCell_DIY_Mapper example
 
 Arduino IDE:
 
-Select File -> Open -> CubeCell_DIY_Mapper.ino
+Select File -> Open -> CubeCell_DIY_Mapper[V1|VIB].ino
 
 Select Tools -> Port: "COM# or ttyACM#"
 
