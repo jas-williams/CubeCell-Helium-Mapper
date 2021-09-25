@@ -141,3 +141,13 @@ The payload and the decoder allows the data to update
 
 Here is a youtube Video uploaded by Joey but **note** Joey adds 3 lables you only need **one label** assign the one label to the device, function, and the 2 integrations
 [Youtube Video from Joey](https://youtu.be/WIIC_DvZyz0)
+
+# Google Sheets Integration
+
+- Create new sheet in Google Sheets, give it a name. 
+- Get the spreadsheet ID from the URL, it is the text between the forward slashes starting from https://docs.google.com/spreadsheets/d/
+- Go to Tools -> Script Editor, rename the file to something meaningful, paste the code from https://github.com/jas-williams/CubeCell-Helium-Mapper/blob/main/Google-Sheets-Post-Script.gs
+- Edit the script to add the correct spreadsheet ID
+- Deploy as web application, give it permissions to your account
+- Get the resulting URL and use it in Console to create new HTTP integration, paste the URL in the endpoint field and leave everything else default (method = Post, no additional headers or parameters)
+- Go to your flows, add the integration and connect it to your decoder so that the decoder feeds into the integration.
