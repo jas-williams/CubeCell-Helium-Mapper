@@ -14,7 +14,8 @@ The payload and the decoder allows the data to update
 
 Using a Heltec CubeCell 6502 board with OLED display. Please follow every instruction step below from top to bottom.
 
-[Quickstart Guide](https://docs.helium.com/use-the-network/devices/development/heltec-cubecell-htcc-ab01/arduino/)
+[Quickstart Guide](https://docs.helium.com/use-the-network/devices/development/heltec/cubecell-dev-board/arduino/)
+
 
 [Heltec CubeCell Board Product Page](https://heltec.org/project/htcc-ab02s/)
 
